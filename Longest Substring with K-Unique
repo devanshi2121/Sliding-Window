@@ -1,0 +1,42 @@
+// Brute force - TLE at some test cases 
+class Solution {
+    public int longestkSubstr(String s, int k) {
+        // return maxlen;
+        int maxlen=-1,n=s.length();
+        for(int i=0;i<n;i++){
+            HashSet<Character> set=new HashSet<>();
+            for(int j=i;j<n;j++){
+                set.add(s.charAt(j));
+                if(set.size()>k){
+                    break;
+                }
+                if(set.size()==k){
+                   maxlen=Math.max(maxlen,j-i+1);
+                }
+            }
+        }
+        return maxlen;
+    }
+}
+
+// Optimal Approachs -
+class Solution {
+    public int longestkSubstr(String s, int k) {
+        int maxlen=-1,n=s.length();
+        HashMap<Character,Integer> map=new HashMap<>();
+        int l=0,r=0;
+        while(r<n){
+            map.put(s.charAt(r),map.getOrDefault(s.charAt(r),0)+1);
+            while(map.size()>k){
+                map.put(s.charAt(l),map.get(s.charAt(l))-1);
+                if(map.get(s.charAt(l))==0){
+                    map.remove(s.charAt(l));
+                }
+                l++;
+            }
+            if(map.size()==k) maxlen=Math.max(maxlen,r-l+1);    
+            r++;
+        }
+        return maxlen;
+    }
+}
